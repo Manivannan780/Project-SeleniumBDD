@@ -3,33 +3,65 @@ package com.test.PageObjects;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class ProductsPage_PO {
+import junit.framework.Assert;
+
+public class ProductsPage_PO extends BasePage_PO {
 	
+	
+private static ProductsPage_PO productsPageinstance;
+    
+    private ProductsPage_PO(){
+    	System.out.println("ProductsPage_PO Instance Constructor");
+    }
+    
+    
+    public static ProductsPage_PO getInstance()
+    {
+        if (productsPageinstance == null) {
+        	productsPageinstance = new ProductsPage_PO();
+        }  	
+        return productsPageinstance;
+    }
 	
 	
 	@FindBy(xpath="//div[@class='bm-burger-button']/button")
-	public static WebElement hamburgerBTNInProductsPage;
+	private WebElement hamburgerBTNInProductsPage;
 	
 	
 	@FindBy(xpath="//div[@id='inventory_container']//div[@class='inventory_item_name']")
-	public static WebElement productNamesInProductsPage;
+	private  WebElement productNamesInProductsPage;
 	
 	
 	@FindBy(xpath="//div[@id='inventory_container']//div[@class='inventory_item_desc']")
-	public static WebElement productDescriptionInProductsPage;
+	private  WebElement productDescriptionInProductsPage;
 	
 	
 	@FindBy(xpath="//div[@id='inventory_container']//div[@class='pricebar']")
-	public static WebElement productPriceInProductsPage;
+	private  WebElement productPriceInProductsPage;
 	
 	
 	
 	@FindBy(xpath="//div[@class='inventory_item_name'][text()='Sauce Labs Backpack']")
-	public static WebElement productName;
+	private  WebElement productName;
 	
 	
 	@FindBy(css="nav a[id='logout_sidebar_link']")
-	public static WebElement logoutBTN;
+	private WebElement logoutBTN;
+	
+	
+	
+	
+	
+	public void checkProductNameText(String expectedText) {
+		
+		String actualText=this.getElementText(productName);
+		 Assert.assertEquals("Expected text: '" + expectedText + "', Actual text: '" + actualText + "'", expectedText, actualText);		
+		
+	}
+
+	
+	
+	
 	
 	
 		

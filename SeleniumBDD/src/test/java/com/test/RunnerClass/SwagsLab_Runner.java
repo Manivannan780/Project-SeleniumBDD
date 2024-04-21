@@ -10,6 +10,7 @@ import io.cucumber.junit.CucumberOptions;
 		
 		features="src/test/resources/Features",
 		glue="com.test.Stepdefinitions",
+		//dryRun=true,
 		monochrome=true
 		)
 public class SwagsLab_Runner {
