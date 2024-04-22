@@ -1,0 +1,121 @@
+package com.test.PageObjects;
+
+import java.time.Duration;
+
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.test.WebdriverManager.DriverManager;
+
+public class BasePage_PO {
+	protected WebDriverWait wait;
+	Actions actions;
+	protected JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
+	
+	  
+	  public BasePage_PO() {
+	        PageFactory.initElements(DriverManager.getDriver(), this);
+	        wait = new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(30));
+	        actions = new Actions(DriverManager.getDriver());
+	    }
+
+
+	public void clickElement(WebElement element) {
+		scrollToElement(element);
+		wait.until(ExpectedConditions.visibilityOf(element));
+		wait.until(ExpectedConditions.elementToBeClickable(element));
+		element.click();
+	}
+
+	public void scrollToElement(WebElement Element) {
+		js.executeScript("arguments[0].scrollIntoView();", Element);
+	}
+
+	public void enterText(WebElement element, String text) {
+		wait.until(ExpectedConditions.visibilityOf(element));
+		element.clear();
+		element.sendKeys(text);
+	}
+
+	public void doubleClickElement(WebElement element) {
+		scrollToElement(element);
+		wait.until(ExpectedConditions.visibilityOf(element));
+		wait.until(ExpectedConditions.elementToBeClickable(element));
+		actions.doubleClick(element).build().perform();
+	}
+
+	public void refresh() {
+		DriverManager.getDriver().navigate().refresh();
+	}
+
+	public String generateXpathWithOption(String optionXpath, String option) {
+		return String.format(optionXpath, option);
+	}
+
+	public WebElement getSingleElementFromListOfElements(String locator, boolean useXPathLocator, int elementIndex) {
+		java.util.List<WebElement> allElements;
+		if (useXPathLocator) {
+			allElements = DriverManager.getDriver().findElements(By.xpath(locator));
+		} else {
+			allElements = DriverManager.getDriver().findElements(By.cssSelector(locator));
+		}
+		if (elementIndex >= 0 && elementIndex < allElements.size()) {
+			return allElements.get(elementIndex);
+		} else {
+			throw new java.util.NoSuchElementException("Element not found at index: " + elementIndex);
+		}
+	}
+
+	public boolean verifyElementContainsText(WebElement element, String expectedText) {
+		String actualText = element.getText().trim();
+		return actualText.contains(expectedText.trim());
+	}
+
+	public String getElementText(WebElement element) {
+		String actualText = element.getText().trim();
+		return actualText;
+	}
+
+	
+	
+	public void getBackgroundColor(WebElement element, String expectedBackgroundColor) {
+        String actualBGColor = element.getCssValue("background-color");
+        System.out.println("Background Color - RGBA Format :" + actualBGColor);
+        String expectedBGColor = String.format(expectedBackgroundColor);
+        if (actualBGColor.equalsIgnoreCase(expectedBGColor)) {
+            Assert.assertTrue(actualBGColor.equalsIgnoreCase(expectedBGColor));
+        } else {
+            Assert.fail("Background color mismatch: Expected " + expectedBGColor + ", Actual: " + actualBGColor);
+        }
+    }
+
+	
+	public void validateCurrentURL(String expectedURL) {
+		String currentURL = DriverManager.getDriver().getCurrentUrl();
+	    if (currentURL.contains(expectedURL)) {
+	        System.out.println("Current URL matches the expected URL: " + expectedURL);
+	    } else {
+	        System.out.println("Current URL does not match the expected URL: " + expectedURL);
+	        Assert.fail("Current URL does not match the expected URL: " + expectedURL);
+	    }
+	}
+
+	
+
+    public void checkVisibility(WebElement element) {
+        try {
+            wait.until(ExpectedConditions.visibilityOf(element));
+        } finally {
+            Assert.assertTrue(element.isDisplayed());
+        }
+    }
+
+	
+	
+}
