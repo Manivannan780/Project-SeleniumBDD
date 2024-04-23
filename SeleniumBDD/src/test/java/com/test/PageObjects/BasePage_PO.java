@@ -1,6 +1,7 @@
 package com.test.PageObjects;
 
 import java.time.Duration;
+import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -9,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.test.WebdriverManager.DriverManager;
@@ -97,7 +99,10 @@ public class BasePage_PO {
 
 	
 	public void validateCurrentURL(String expectedURL) {
-		String currentURL = DriverManager.getDriver().getCurrentUrl();
+		String currentURL = DriverManager.getDriver().getCurrentUrl();//driver.getCurrentURL()
+		
+	
+		
 	    if (currentURL.contains(expectedURL)) {
 	        System.out.println("Current URL matches the expected URL: " + expectedURL);
 	    } else {
@@ -116,6 +121,25 @@ public class BasePage_PO {
         }
     }
 
+    
+    
+    public String getFirstSelectedOptionTextInDropdown(WebElement element) {
+        Select select = new Select(element);
+        WebElement selectedOption = select.getFirstSelectedOption();
+        String selectedOptionText = selectedOption.getText();
+        System.out.println(selectedOptionText);
+        return selectedOptionText.trim();
+    }
+
+
+    public boolean isElementSelected(WebElement element) {
+        try {
+            return element.isSelected();
+        } catch (NoSuchElementException e) {
+            System.out.println("Error: Element not found! " + e.getMessage());
+            return false;
+        }
+    }
 	
 	
 }

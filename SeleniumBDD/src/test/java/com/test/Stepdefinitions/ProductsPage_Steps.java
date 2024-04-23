@@ -60,18 +60,10 @@ public class ProductsPage_Steps {
 	@And("Logout the Application")
 	public void logout_the_application() {
 	    
-//		ProductsPage_PO.hamburgerBTNInProductsPage.click();
-//		ProductsPage_PO.logoutBTN.click();
-//		Boolean userName=LoginPage_PO.userNameInputField.isDisplayed();
-//		if(userName) {
-//			System.out.println("Login Page");
-//		}else {
-//			System.out.println("User not in Login Page");
-//		}
-//		System.out.println("Closing the Browser");
-//		DriverManager.getDriver().close();
-//		System.out.println("Browser Closed");
-		
+		ProductsPage_PO.getInstance().logoutApplication();	
+		LoginPage_PO.getInstance().checkLoginInputFieldsIsDisplayed();
+		LoginPage_PO.getInstance().checkLoginCredentialsSectionIsDisplayed();
+		LoginPage_PO.getInstance().checkloginBTNColor("rgb(226, 35, 26)");
 	}
 
 }
