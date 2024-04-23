@@ -56,10 +56,17 @@ private static ProductsPage_PO productsPageinstance;
 		
 		String actualText=this.getElementText(productName);
 		 Assert.assertEquals("Expected text: '" + expectedText + "', Actual text: '" + actualText + "'", expectedText, actualText);		
-		
 	}
+	
+	
+	
+	
 
 	
+	public void logoutApplication() {
+		this.clickElement(hamburgerBTNInProductsPage);
+		this.clickElement(logoutBTN);		
+	}
 	
 	
 	

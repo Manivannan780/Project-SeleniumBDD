@@ -37,5 +37,13 @@ public class ProductsDetailsPage_PO {
 
 	@FindBy(xpath = "//button[text()='REMOVE']")
 	private WebElement removeBTNInProductsDetailsPage;
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
