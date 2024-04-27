@@ -1,6 +1,8 @@
 package com.test.PageObjects;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.junit.Assert;
@@ -19,14 +21,12 @@ public class BasePage_PO {
 	protected WebDriverWait wait;
 	Actions actions;
 	protected JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
-	
-	  
-	  public BasePage_PO() {
-	        PageFactory.initElements(DriverManager.getDriver(), this);
-	        wait = new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(30));
-	        actions = new Actions(DriverManager.getDriver());
-	    }
 
+	public BasePage_PO() {
+		PageFactory.initElements(DriverManager.getDriver(), this);
+		wait = new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(30));
+		actions = new Actions(DriverManager.getDriver());
+	}
 
 	public void clickElement(WebElement element) {
 		scrollToElement(element);
@@ -84,62 +84,109 @@ public class BasePage_PO {
 		return actualText;
 	}
 
-	
-	
 	public void getBackgroundColor(WebElement element, String expectedBackgroundColor) {
-        String actualBGColor = element.getCssValue("background-color");
-        System.out.println("Background Color - RGBA Format :" + actualBGColor);
-        String expectedBGColor = String.format(expectedBackgroundColor);
-        if (actualBGColor.equalsIgnoreCase(expectedBGColor)) {
-            Assert.assertTrue(actualBGColor.equalsIgnoreCase(expectedBGColor));
-        } else {
-            Assert.fail("Background color mismatch: Expected " + expectedBGColor + ", Actual: " + actualBGColor);
-        }
-    }
-
-	
-	public void validateCurrentURL(String expectedURL) {
-		String currentURL = DriverManager.getDriver().getCurrentUrl();//driver.getCurrentURL()
-		
-	
-		
-	    if (currentURL.contains(expectedURL)) {
-	        System.out.println("Current URL matches the expected URL: " + expectedURL);
-	    } else {
-	        System.out.println("Current URL does not match the expected URL: " + expectedURL);
-	        Assert.fail("Current URL does not match the expected URL: " + expectedURL);
-	    }
+		String actualBGColor = element.getCssValue("background-color");
+		System.out.println("Background Color - RGBA Format :" + actualBGColor);
+		String expectedBGColor = String.format(expectedBackgroundColor);
+		if (actualBGColor.equalsIgnoreCase(expectedBGColor)) {
+			Assert.assertTrue(actualBGColor.equalsIgnoreCase(expectedBGColor));
+		} else {
+			Assert.fail("Background color mismatch: Expected " + expectedBGColor + ", Actual: " + actualBGColor);
+		}
 	}
 
-	
+	public void validateCurrentURL(String expectedURL) {
+		String currentURL = DriverManager.getDriver().getCurrentUrl();// driver.getCurrentURL()
 
-    public void checkVisibility(WebElement element) {
-        try {
-            wait.until(ExpectedConditions.visibilityOf(element));
-        } finally {
-            Assert.assertTrue(element.isDisplayed());
-        }
-    }
+		if (currentURL.contains(expectedURL)) {
+			System.out.println("Current URL matches the expected URL: " + expectedURL);
+		} else {
+			System.out.println("Current URL does not match the expected URL: " + expectedURL);
+			Assert.fail("Current URL does not match the expected URL: " + expectedURL);
+		}
+	}
 
-    
-    
-    public String getFirstSelectedOptionTextInDropdown(WebElement element) {
-        Select select = new Select(element);
-        WebElement selectedOption = select.getFirstSelectedOption();
-        String selectedOptionText = selectedOption.getText();
-        System.out.println(selectedOptionText);
-        return selectedOptionText.trim();
-    }
+	public void checkVisibility(WebElement element) {
+		try {
+			wait.until(ExpectedConditions.visibilityOf(element));
+		} finally {
+			Assert.assertTrue("The Element is not visible", element.isDisplayed());
+		}
+	}
 
+	public String getFirstSelectedOptionTextInDropdown(WebElement element) {
+		Select select = new Select(element);
+		WebElement selectedOption = select.getFirstSelectedOption();
+		String selectedOptionText = selectedOption.getText();
+		System.out.println(selectedOptionText);
+		return selectedOptionText.trim();
+	}
 
-    public boolean isElementSelected(WebElement element) {
-        try {
-            return element.isSelected();
-        } catch (NoSuchElementException e) {
-            System.out.println("Error: Element not found! " + e.getMessage());
-            return false;
-        }
-    }
-	
-	
+	public boolean isElementSelected(WebElement element) {
+		try {
+			return element.isSelected();
+		} catch (NoSuchElementException e) {
+			System.out.println("Error: Element not found! " + e.getMessage());
+			return false;
+		}
+	}
+
+	public List<String> getListofElementsText(String locator, boolean useXpathLocator) {
+		List<String> productNames = new ArrayList<>();
+		List<WebElement> productElements;
+		try {
+			if (useXpathLocator) {
+				productElements = DriverManager.getDriver().findElements(By.xpath(locator));
+			} else {
+				productElements = DriverManager.getDriver().findElements(By.cssSelector(locator));
+			}
+
+			for (WebElement productElement : productElements) {
+				String productName = productElement.getText().trim();
+				productNames.add(productName);
+			}
+		} catch (NoSuchElementException e) {
+			System.out.println("No product elements found using the provided locator: " + locator);
+		}
+
+		return productNames;
+	}
+
+	public boolean verifyListofElementsText(List<String> expectedProductNames, List<String> actualProductNames) {
+		if (expectedProductNames.isEmpty()) {
+			System.out.println("No expected product names provided for verification.");
+			return false;
+		}
+
+		for (String expectedName : expectedProductNames) {
+			boolean found = false;
+			for (String actualName : actualProductNames) {
+				if (actualName.toLowerCase().contains(expectedName.toLowerCase())) {
+					found = true;
+					break;
+				}
+			}
+			Assert.assertTrue("Expected product name '" + expectedName + "' not found in the actual list.", found);
+		}
+
+		return true;
+	}
+
+	public void isElementEnabled(WebElement element) {
+
+		boolean elementIsEnabled = element.isEnabled();
+		Assert.assertTrue("The Element should be Enabled", elementIsEnabled);
+	}
+
+	public void isElementDisabled(WebElement element, boolean checkAttributeDisabled) {
+		wait.until(ExpectedConditions.visibilityOf(element));
+		if (!checkAttributeDisabled) {
+			System.out.println("Element Aria-Disabled Attribute Value:" + element.getAttribute("aria-disabled"));
+			Assert.assertEquals("true", element.getAttribute("aria-disabled"));
+		} else {
+			System.out.println("Element Disabled Attribute Value: " + element.getAttribute("disabled"));
+			Assert.assertEquals("true", element.getAttribute("disabled"));
+		}
+	}
+
 }
