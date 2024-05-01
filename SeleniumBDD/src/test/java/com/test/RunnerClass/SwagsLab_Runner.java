@@ -8,10 +8,11 @@ import io.cucumber.junit.CucumberOptions;
 @RunWith(Cucumber.class)
 @CucumberOptions(
 		
-		features="src/test/resources/Features/LoginPage.feature",
+		features="src/test/resources/Features/ProductsPage.feature",
 		glue="com.test.Stepdefinitions",
 		//dryRun=true,
-		monochrome=true
+		monochrome=true,
+		tags="@Smoke"
 		)
 public class SwagsLab_Runner {
 
