@@ -188,5 +188,91 @@ public class BasePage_PO {
 			Assert.assertEquals("true", element.getAttribute("disabled"));
 		}
 	}
+	
+	
+	public void selectDropDownValue(WebElement element, String howTo, String option) {
+		wait.until(ExpectedConditions.visibilityOf(element));
+		Select select = new Select(element);
+		switch (howTo) {
+		case "index":
+			select.selectByIndex(Integer.parseInt(option));
+			break;
+		case "value":
+			select.selectByValue(option);
+			break;
+		case "text":
+			select.selectByVisibleText(option);
+			break;
+		default:
+			System.out.println("Please provide a valid selection in the feature file");
+			break;
+		}
+    }
+	
+	
+	
 
+	//Logic for Strings are Ascending or Descending order
+	
+	public boolean isListSortedAscending(List<String> productNames) {
+        for (int i = 1; i < productNames.size(); i++) {
+            String previousName = productNames.get(i - 1).toLowerCase();
+            String currentName = productNames.get(i).toLowerCase();
+            System.out.println("Index Value :"+i+" Previous Name :"+previousName+" Current Name :"+currentName);
+            System.out.println(currentName.compareTo(previousName));
+            if (currentName.compareTo(previousName) < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+	
+	
+	
+	public boolean isListSortedDescending(List<String> productNames) {
+        for (int i = 1; i < productNames.size(); i++) {
+            String previousName = productNames.get(i - 1).toLowerCase(); // Optional: Lowercase for case-insensitive comparison
+            String currentName = productNames.get(i).toLowerCase();
+
+            if (currentName.compareTo(previousName) > 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+	
+	
+	
+	
+	//Sort Validation for Integer and Double Values
+	
+	public boolean isListSortedAscendingInteger(List<Double> prices) {
+		  for (int i = 1; i < prices.size(); i++) {
+		    double previousPrice = prices.get(i - 1);
+		    double currentPrice = prices.get(i);
+
+		    if (currentPrice < previousPrice) {
+		      return false;
+		    }
+		  }
+
+		  return true;
+		}
+	
+
+	public boolean isListSortedDescendingInteger(List<Double> prices) {
+		  for (int i = 1; i < prices.size(); i++) {
+		    double previousPrice = prices.get(i - 1);
+		    double currentPrice = prices.get(i);
+
+		    if (currentPrice > previousPrice) {
+		      return false;
+		    }
+		  }
+
+		  return true;
+		}
+	
+	
 }
