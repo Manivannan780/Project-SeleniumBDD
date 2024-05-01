@@ -1,5 +1,6 @@
 package com.test.PageObjects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
@@ -29,6 +30,8 @@ public class ProductsPage_PO extends BasePage_PO {
 	private WebElement productNamesInProductsPage;
 
 	protected String productsNamesTextInProductsPage = "//div[@id='inventory_container']//div[@class='inventory_item_name']";
+	
+	protected String productsPriceTextInProductsPage ="//div[@id='inventory_container']//div[@class='inventory_item_price']";
 
 	@FindBy(css = "div[id='header_container'] div[class='app_logo']")
 	private WebElement applicationLogo;
@@ -67,5 +70,68 @@ public class ProductsPage_PO extends BasePage_PO {
 		hamburgerBTNInProductsPage.click();
 		this.clickElement(logoutBTN);
 	}
+	
+	
+	@FindBy(css="select[class='product_sort_container']")
+	private WebElement productSortDropdown;
+	
+	public void selectProductsSortDropdown(String selectOptionBy,String option) {
+		this.selectDropDownValue(productSortDropdown,selectOptionBy,option);
+	}
+	
 
+	
+	
+	public void checkProductsNameIsSorted(String expectedSortOption) {
+
+		boolean isSorted = false;
+		List<String> productsText = this.getListofElementsText(productsNamesTextInProductsPage, true);
+
+		if (expectedSortOption.equalsIgnoreCase("A to Z")) {
+			isSorted = this.isListSortedAscending(productsText);
+		} else if (expectedSortOption.equalsIgnoreCase("Z to A")) {
+
+			isSorted = this.isListSortedDescending(productsText);
+		} else {
+			System.out.println("Invalid sort option: " + expectedSortOption);
+		}
+
+		System.out.println("Products are sorted " + (isSorted ? "as expected" : "incorrectly"));
+		Assert.assertTrue("Names are not sorted as Expected", isSorted);
+	}
+	
+	
+	
+	public void checkProductsPriceIsSorted(String expectedSortOption) {
+
+		boolean isSorted = false;
+		List<String> productsText = this.getListofElementsText(productsPriceTextInProductsPage, true);
+		
+		
+		List<Double> productsPrice = new ArrayList<>();
+
+		
+		for (String productsPriceText : productsText) {
+			
+			String priceString = productsPriceText.substring(1);
+			double price = Double.parseDouble(priceString);
+		
+			productsPrice.add(price);
+		}
+		System.out.println("Products Price : "+productsPrice);
+	
+		if (expectedSortOption.equalsIgnoreCase("Low to High")) {
+			isSorted = this.isListSortedAscendingInteger(productsPrice);
+		} else if (expectedSortOption.equalsIgnoreCase("High to Low")) {
+
+			isSorted = this.isListSortedDescendingInteger(productsPrice);
+		} else {
+			System.out.println("Invalid sort option: " + expectedSortOption);
+		}
+
+		System.out.println("Products are sorted " + (isSorted ? "as expected" : "incorrectly"));
+		Assert.assertTrue("Names are not sorted as Expected", isSorted);
+	}	
+	
+	
 }

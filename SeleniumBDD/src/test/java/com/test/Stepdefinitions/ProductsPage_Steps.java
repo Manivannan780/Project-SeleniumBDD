@@ -56,6 +56,7 @@ public class ProductsPage_Steps {
 		ProductsPage_PO.getInstance().validateCurrentURL("/inventory.html");
 		ProductsPage_PO.getInstance().checkProductsPageElementsState();
 	}
+	
 
 	@And("Logout the Application")
 	public void logout_the_application() {
@@ -66,4 +67,31 @@ public class ProductsPage_Steps {
 		LoginPage_PO.getInstance().checkloginBTNColor("rgb(226, 35, 26)");
 	}
 
+	
+	@Then("User selects the products sort dropdown option {string} {string}")
+	public void user_selects_the_products_sort_dropdown_option(String selectOptionBy, String option) {
+		ProductsPage_PO.getInstance().selectProductsSortDropdown(selectOptionBy, option);
+	}
+	
+	
+    @Then ("Check that the product names are sorted based on the user selection in the products dropdown {string}")
+    public void check_that_the_product_names_are_sorted_based_on_the_selection_in_the_products_dropdown(String expectedSortOption) {
+    	ProductsPage_PO.getInstance().checkProductsNameIsSorted(expectedSortOption);	
+    }
+    
+  
+    @Then ("Check that the product prices are sorted based on the user selection in the products dropdown {string}")
+    public void check_that_the_product_prices_are_sorted_based_on_the_selection_in_the_products_dropdown(String expectedSortOption) {
+    	
+    	ProductsPage_PO.getInstance().checkProductsPriceIsSorted(expectedSortOption);
+    }
+  
+	
+	
+	
+	
+	
+	
+	
+	
 }
