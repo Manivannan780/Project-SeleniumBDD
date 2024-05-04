@@ -30,8 +30,8 @@ public class ProductsPage_PO extends BasePage_PO {
 	private WebElement productNamesInProductsPage;
 
 	protected String productsNamesTextInProductsPage = "//div[@id='inventory_container']//div[@class='inventory_item_name']";
-	
-	protected String productsPriceTextInProductsPage ="//div[@id='inventory_container']//div[@class='inventory_item_price']";
+
+	protected String productsPriceTextInProductsPage = "//div[@id='inventory_container']//div[@class='inventory_item_price']";
 
 	@FindBy(css = "div[id='header_container'] div[class='app_logo']")
 	private WebElement applicationLogo;
@@ -48,6 +48,17 @@ public class ProductsPage_PO extends BasePage_PO {
 	@FindBy(css = "nav a[id='logout_sidebar_link']")
 	private WebElement logoutBTN;
 
+	@FindBy(xpath = "//button[text()='ADD TO CART']")
+	private WebElement addCartBTNInProductsPage;
+
+	@FindBy(css = "[id='shopping_cart_container'] span[class*='fa-layers-counter']")
+	private WebElement productCartCount;
+
+	protected String addToCartBTNElements = "//button[text()='ADD TO CART']";
+
+	protected String removeBTNElements = "//button[text()='REMOVE']";
+
+	
 	public void checkProductNameText(String expectedText) {
 
 		String actualText = this.getElementText(singleProductName);
@@ -70,18 +81,14 @@ public class ProductsPage_PO extends BasePage_PO {
 		hamburgerBTNInProductsPage.click();
 		this.clickElement(logoutBTN);
 	}
-	
-	
-	@FindBy(css="select[class='product_sort_container']")
-	private WebElement productSortDropdown;
-	
-	public void selectProductsSortDropdown(String selectOptionBy,String option) {
-		this.selectDropDownValue(productSortDropdown,selectOptionBy,option);
-	}
-	
 
-	
-	
+	@FindBy(css = "select[class='product_sort_container']")
+	private WebElement productSortDropdown;
+
+	public void selectProductsSortDropdown(String selectOptionBy, String option) {
+		this.selectDropDownValue(productSortDropdown, selectOptionBy, option);
+	}
+
 	public void checkProductsNameIsSorted(String expectedSortOption) {
 
 		boolean isSorted = false;
@@ -99,27 +106,23 @@ public class ProductsPage_PO extends BasePage_PO {
 		System.out.println("Products are sorted " + (isSorted ? "as expected" : "incorrectly"));
 		Assert.assertTrue("Names are not sorted as Expected", isSorted);
 	}
-	
-	
-	
+
 	public void checkProductsPriceIsSorted(String expectedSortOption) {
 
 		boolean isSorted = false;
 		List<String> productsText = this.getListofElementsText(productsPriceTextInProductsPage, true);
-		
-		
+
 		List<Double> productsPrice = new ArrayList<>();
 
-		
 		for (String productsPriceText : productsText) {
-			
+
 			String priceString = productsPriceText.substring(1);
 			double price = Double.parseDouble(priceString);
-		
+
 			productsPrice.add(price);
 		}
-		System.out.println("Products Price : "+productsPrice);
-	
+		System.out.println("Products Price : " + productsPrice);
+
 		if (expectedSortOption.equalsIgnoreCase("Low to High")) {
 			isSorted = this.isListSortedAscendingInteger(productsPrice);
 		} else if (expectedSortOption.equalsIgnoreCase("High to Low")) {
@@ -128,10 +131,41 @@ public class ProductsPage_PO extends BasePage_PO {
 		} else {
 			System.out.println("Invalid sort option: " + expectedSortOption);
 		}
-
 		System.out.println("Products are sorted " + (isSorted ? "as expected" : "incorrectly"));
 		Assert.assertTrue("Names are not sorted as Expected", isSorted);
-	}	
+	}
+
+	public void selectAddToCartBTN() {
+		this.clickElement(addCartBTNInProductsPage);
+	}
+
+	public void selectAddToCartBTNInProductsPage(String elementIndex) {
+		int elementIndexPosition = Integer.parseInt(elementIndex);
+		WebElement addCartBTN = this.getSingleElementFromListOfElements(addToCartBTNElements, true,
+				elementIndexPosition);
+		this.clickElement(addCartBTN);
+	}
+
+	public void checkRemoveButtonVisibility(String elementIndex) {
+		int elementIndexPosition = Integer.parseInt(elementIndex);
+		WebElement removeBTN = this.getSingleElementFromListOfElements(removeBTNElements, true, elementIndexPosition);
+		this.checkVisibility(removeBTN);
+	}
+
+	public void selectRemoveButtonVisibility(String elementIndex) {
+		int elementIndexPosition = Integer.parseInt(elementIndex);
+		WebElement removeBTN = this.getSingleElementFromListOfElements(removeBTNElements, true, elementIndexPosition);
+		this.clickElement(removeBTN);
+	}
+
+	public void validateTheProductCountIsDisplayedInProductCart(String expectedCountText) {
+
+		String productCountText = this.getElementText(productCartCount);
+		System.out.println(productCountText);
+		Assert.assertEquals(expectedCountText, productCountText);
+	}
 	
 	
+	
+
 }

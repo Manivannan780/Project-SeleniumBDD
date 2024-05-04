@@ -87,6 +87,32 @@ public class ProductsPage_Steps {
     }
   
 	
+	@And("User clicks on the Add to Cart button")
+	public void user_clicks_on_the_add_to_cart_button() {
+		ProductsPage_PO.getInstance().selectAddToCartBTN();
+	}
+	
+	
+	@And("User clicks on the Add Cart button On the Products page {string}")
+	public void user_clicks_on_the_add_cart_button_on_the_products_page(String elementIndex) {
+		ProductsPage_PO.getInstance().selectAddToCartBTNInProductsPage(elementIndex);
+	}
+	
+	
+	@Then("Check if the Add to Cart button has changed to the Remove button after clicking the Add to Cart button {string}")
+	public void check_if_the_add_to_cart_button_has_changed_to_the_remove_button_after_clicking_the_add_to_cart_button(String elementIndex) {
+		
+		ProductsPage_PO.getInstance().checkRemoveButtonVisibility(elementIndex);
+		
+	}
+	
+	
+	@Then("Verify that the cart icon displays the count of products added to the cart {string}")
+	public void verify_that_the_cart_icon_displays_the_count_of_products_added_to_the_cart(
+			String expectedProductCountText) {
+		ProductsPage_PO.getInstance().validateTheProductCountIsDisplayedInProductCart(expectedProductCountText);
+		
+	}
 	
 	
 	
