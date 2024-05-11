@@ -275,4 +275,15 @@ public class BasePage_PO {
 		}
 	
 	
+	
+
+	public String getStringXpath(String elementXpath,String elementText) {
+		
+		String elementXpathAsString=String.format(elementXpath, elementText);
+		return elementXpathAsString;
+	}
+	
+	
+	
+	
 }

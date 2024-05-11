@@ -102,7 +102,7 @@ Feature: Products Page
     Then Verify that the cart icon displays the count of products added to the cart "1" 
     And Logout the Application
     
-    
+   
     Scenario: TC:07- Verify that the user is able to add the highest price product to the cart by selecting the add to cart button in the Products page
     Given Launch the application
     Then User checks if the login page contents are displayed properly
@@ -118,7 +118,7 @@ Feature: Products Page
     Then Check that the product prices are sorted based on the user selection in the products dropdown "High to Low"
     And User clicks on the Add Cart button On the Products page "0"
     Then Check if the Add to Cart button has changed to the Remove button after clicking the Add to Cart button "0"
-    Then Verify that the cart icon displays the count of products added to the cart "1" 
+    Then Verify that the cart icon displays the count of products added to the cart "2" 
     And Logout the Application
     
 
@@ -133,12 +133,12 @@ Feature: Products Page
       | Sauce Labs Bike Light    |
       | Sauce Labs Fleece Jacket |
       | Sauce Labs Onesie        |
-    And User clicks on the Add Cart button On the Products page "2"
+    And User clicks on the Add Cart button On the Products page "3"
     Then Check if the Add to Cart button has changed to the Remove button after clicking the Add to Cart button "0"
-    Then Verify that the cart icon displays the count of products added to the cart "1" 
-    And User clicks on the Add Cart button On the Products page "4"
+    Then Verify that the cart icon displays the count of products added to the cart "3" 
+    And User clicks on the Add Cart button On the Products page "0"
     Then Check if the Add to Cart button has changed to the Remove button after clicking the Add to Cart button "1"
-    Then Verify that the cart icon displays the count of products added to the cart "2" 
+    Then Verify that the cart icon displays the count of products added to the cart "4" 
     And Logout the Application
     
     
