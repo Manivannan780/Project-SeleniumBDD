@@ -12,3 +12,5 @@ credentials.properties
 /node_modules/
 /vendor/
 *.tmp
+# Ignore the test-output directory
+src/test/resources/test-output/
