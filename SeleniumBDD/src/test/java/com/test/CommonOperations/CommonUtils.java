@@ -1,11 +1,15 @@
 package com.test.CommonOperations;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
 import org.checkerframework.common.reflection.qual.GetClass;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.support.PageFactory;
 
 import com.test.ConstantValues.Constants;
@@ -35,6 +39,15 @@ public class CommonUtils {
 		Constants.ChromeDriverLocation=properties.getProperty("ChromeDriver_Location");
 			
 	}
+	
+	
+	public byte[] getByteScreenshot() throws IOException 
+	{
+	    File src = ((TakesScreenshot) DriverManager.getDriver()).getScreenshotAs(OutputType.FILE);
+	    byte[] fileContent = FileUtils.readFileToByteArray(src);
+	    return fileContent;
+	}
+	
 	
 	
 	public void initElements() {

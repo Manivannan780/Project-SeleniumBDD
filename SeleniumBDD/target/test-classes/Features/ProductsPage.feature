@@ -128,8 +128,8 @@ Feature: Products Page
     When Enter the username and password and click login
     Then Check the Products title are displayed
     Then Check the Products Names are displayed correctly
-      | Sauce Labs Backpack      |
-      | Sauce Labs Bolt T-Shirt  |
+      | Sauce Labs Backpackkkk      |
+      | Sauce Labs Bolt T-Shirrrt  |
       | Sauce Labs Bike Light    |
       | Sauce Labs Fleece Jacket |
       | Sauce Labs Onesie        |

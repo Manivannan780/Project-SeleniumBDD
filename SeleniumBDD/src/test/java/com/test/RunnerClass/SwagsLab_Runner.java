@@ -10,9 +10,9 @@ import io.cucumber.junit.CucumberOptions;
 		
 		features="src/test/resources/Features",
 		glue="com.test.Stepdefinitions",
-		//dryRun=true,
+		plugin= {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"},
 		monochrome=true
-//		tags="@Smoke"
+        //tags="@Smoke"
 		)
 public class SwagsLab_Runner {
 
